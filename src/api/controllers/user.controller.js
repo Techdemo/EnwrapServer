@@ -96,12 +96,19 @@ exports.login = async (req, res, next) => {
     const token = jwt.sign({ id: user._id }, 'secret', { expiresIn: 3600 });
     if (!token) throw Error('Could not sign the token');
 
+    // check for organisation data 
+    const organisationId = user.organisationId
+    const organisation = await Organisation.findById(organisationId)
+    if (!organisation) throw Error('organisation not found');
+
     res.status(200).json({
       token,
       user: {
         id: user._id,
         username: user.username,
-      }
+        organisationId: organisationId,
+      },
+      organisation,
     })
   } catch(err) {
     res.status(400).json({ msg: err.message })
