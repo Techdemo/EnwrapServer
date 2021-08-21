@@ -1,4 +1,5 @@
 const User = require('../models/user');
+const Organisation = require('../models/Organisation');
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken');
 
@@ -8,26 +9,48 @@ exports.create = async (req, res, next) => {
     password,
     name,
     lastname,
+    organisationId
   } = req.body;
 
-  if(!password || !username || !name || !lastname ) {
+  if(!password || !username || !name || !lastname ||!organisationId ) {
     return res.status(400).json({
       resolved: "failure",
       message: "fields can not be empty",
     })
+
   } try { 
+
+    Organisation.findById(organisationId)
+    .then((organisation) => {
+      console.log('organisation', organisation);
+      if (!organisation) {
+        res.status(404).json({
+          resolved: "success",
+          message: "Organisation not found with id " + organisationId,
+        });
+      return;
+      }
+    })
+
     const hashedPassword = await bcrypt.hash(req.body.password, 10);
 
     const user = new User({
       username: req.body.username,
       password: hashedPassword,
       name: req.body.name,
-      lastname: req.body.lastname
+      lastname: req.body.lastname,
+      organisationId: organisationId
     });
 
     const savedUser = await user.save();
 
-    res.json(savedUser);
+    res.status(200).json({
+      resolved: "succes",
+      data: {
+        user: savedUser,
+      }
+    })
+
   } catch(err) {
     res.status(400).json({ msg: err.message })
   }

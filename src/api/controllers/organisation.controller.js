@@ -25,6 +25,7 @@ exports.create = async (req, res, next) => {
       resolved: "failure",
       message: 'req.body.organisation can not be empty',
     });
+
   return;
   }
 

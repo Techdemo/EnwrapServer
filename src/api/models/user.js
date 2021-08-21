@@ -17,6 +17,10 @@ const UserSchema = new Schema({
   lastname: {
     type: String,
     required: true,
+  },
+  organisationId: {
+    type: String,
+    required: false,
   }
 }, { collection: 'users' });
 
