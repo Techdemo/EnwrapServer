@@ -27,7 +27,7 @@ app
   .use(compression())
   .use(express.json())
 
-required('./routes/health.api')(app);
+require('./routes/health.api.js')(app);
 require('./routes/proposal.api')(app);
 require('./routes/auth.api.js')(app);
 
