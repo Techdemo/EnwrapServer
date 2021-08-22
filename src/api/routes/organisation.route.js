@@ -4,7 +4,7 @@ const controller = require('../controllers/organisation.controller');
 const router = express.Router();
 
 router
-  .route('/')
+  .route('/list')
   .get(controller.list);
 
 // CREATE SINGLE ORGANISATION
