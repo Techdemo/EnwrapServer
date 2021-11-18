@@ -3,11 +3,11 @@ const helpers = require('./helpers');
 module.exports = {
 	async getAll(req, res) {
 		try {
-      const games = await helpers.getAll({});
+      const organisations = await helpers.getAll({});
 
       return res.send({
         status: 'success',
-        body: games && games.length ? games : []
+        body: organisations && organisations.length ? organisations : []
       });
     } catch (error) {
       return res.status(400).send({
