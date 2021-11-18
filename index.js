@@ -1,16 +1,39 @@
-const app = require('./src/config/express');
-const mongoose = require('./src/config/mongoose');
+const port = process.env.PORT || 2525;
+const dbRetryTime = process.env.db_retry_time || 2000;
 
-// make bluebird default Promise
-Promise = require('bluebird'); // eslint-disable-line no-global-assign
+const express = require('express');
+const bodyParser = require('body-parser');
+const app = express();
+const router = require('./services/router');
 
-// open mongoose connection
-mongoose.connect();
+const mongoose = require('mongoose');
+const MONGO_PORT = 27017;
 
-const port = process.env.PORT || 4000;
+const mongoUri = `mongodb://${process.env.db_service_name}:${MONGO_PORT}/${process.env.db_name}`;
 
-app.listen(port, () => {
-  console.log(`SERVER listening at http://localhost:${port}`)
-})
+let db = mongoose.connection;
+let connectWithRetry = function () {
+  return mongoose.connect(mongoUri, {
+    useUnifiedTopology: true,
+    useNewUrlParser: true
+  });
+};
 
-module.exports = app;
+connectWithRetry();
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+
+db.on('error', () => {
+	setTimeout(() => {
+		console.log('DB connection failed. Will try again.');
+
+		connectWithRetry();
+  }, dbRetryTime);
+});
+
+db.on('connected', function () {
+  app.use(router);
+
+  app.listen(port, () => console.log(`All set up. Listening on ${port}!`))
+});
