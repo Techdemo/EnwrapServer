@@ -1,40 +1,23 @@
 {
-  "name": "proposaltool",
-  "version": "1.0.0",
-  "description": "proposal tool for studio vreed",
+  "name": "my-service",
+  "version": "0.0.1",
+  "description": "Docker-compose boilerplate for Express + Mongo, first used on enwrap product",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js",
-    "dev": "nodemon index.js"
+    "dev": "nodemon --inspect=0.0.0.0:5858 index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [
-    "proposal",
-    "npm",
-    "express",
-    "mongoose"
-  ],
-  "author": "marcel fleuren",
+  "author": "Marcel Fleuren",
   "license": "ISC",
   "dependencies": {
-    "bcryptjs": "^2.4.3",
-    "bluebird": "^3.5.0",
     "body-parser": "^1.19.0",
-    "compression": "^1.7.4",
-    "cors": "^2.8.5",
-    "dotenv": "^8.2.0",
     "express": "^4.17.1",
-    "jsonwebtoken": "^8.5.1",
-    "logger": "^0.0.1",
-    "moment": "^2.24.0",
-    "mongoose": "^5.9.10",
-    "node-fetch": "^2.6.1",
-    "nodemon": "^2.0.2",
-    "path": "^0.12.7",
-    "uuid": "^3.1.0",
-    "winston": "^3.1.0"
+    "mongo": "^0.1.0",
+    "mongoose": "^5.8.9"
   },
   "devDependencies": {
-    "handlebars": "^4.7.6"
+    "eslint": "^6.8.0",
+    "nodemon": "^2.0.2"
   }
 }
